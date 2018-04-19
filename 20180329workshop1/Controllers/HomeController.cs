@@ -1,4 +1,4 @@
-﻿using _20180329workshop1.Models;
+using _20180329workshop1.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +9,28 @@ namespace _20180329workshop1.Controllers
 {
     public class HomeController : Controller
     {
-        public List<Models.Orders> GetOrdersBycondition(Models.OrdersSearchArg arg)
-        {
-            List<Models.Orders> result = new List<Orders>();
+        List<Models.Orders> result = new List<Orders>();
+        public HomeController(){
 
-            ///OrderDate = "2018/04/07", RequiredDate = "2018/04/07", ShippedDate = "2018-04-07"
+            if (result.Count< 1) {
+                result.Add(new Orders() { OrderID = 1, CustomerID = 1, EmployeeID = 1, Freight = 60, ShipperID = 1, ShipAddress = "台南市忠孝東路21號", ShipCity = "台南市", ShipRegion = "東區", ShipPostalCode = "701", ShipCountry = "台灣" });
+                result.Add(new Orders() { OrderID = 1, CustomerID = 1, EmployeeID = 1, Freight = 60, ShipperID = 1, ShipAddress = "台南市忠孝東路21號", ShipCity = "台南市", ShipRegion = "東區", ShipPostalCode = "701", ShipCountry = "台灣" });
+                result.Add(new Orders() { OrderID = 1, CustomerID = 1, EmployeeID = 1, Freight = 60, ShipperID = 1, ShipAddress = "台南市忠孝東路21號", ShipCity = "台南市", ShipRegion = "東區", ShipPostalCode = "701", ShipCountry = "台灣" });
 
-            result.Add(new Orders() { OrderID = 1, CustomerID = 1, EmployeeID = 1, Freight = 60, ShipperID = 1, ShipAddress = "台南市忠孝東路21號", ShipCity = "台南市", ShipRegion = "東區", ShipPostalCode = "701", ShipCountry = "台灣" });
+            }
 
-            return result;
         }
+
+        //public static List<Models.Orders> GetOrdersBycondition(Models.OrdersSearchArg arg)
+        //{
+            
+
+        //    ///OrderDate = "2018/04/07", RequiredDate = "2018/04/07", ShippedDate = "2018-04-07"
+
+           
+        //    return result;
+
+        //}
 
         // GET: Home
         public ActionResult Index()
@@ -143,12 +155,13 @@ namespace _20180329workshop1.Controllers
 
         public ActionResult Edit(int id)
         {
-            List<Models.Orders> result = new List<Orders>();
+            
+            //IEnumerable <string> results = result.Where
             //if (id == null)
             //{
             //    return HttpNotFound();
             //}
-           /// var abc = List<Models.Orders>.Find(id);
+            /// var abc = List<Models.Orders>.Find(id);
             return View();
         }
 
