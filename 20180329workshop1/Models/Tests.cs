@@ -12,19 +12,17 @@ namespace _20180329workshop1.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Shippers
+    public partial class Tests
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Shippers()
+        public Tests()
         {
-            this.Orders = new HashSet<Orders>();
+            this.Scores = new HashSet<Scores>();
         }
     
-        public int ShipperID { get; set; }
-        public string CompanyName { get; set; }
-        public string Phone { get; set; }
+        public string TestID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Orders> Orders { get; set; }
+        public virtual ICollection<Scores> Scores { get; set; }
     }
 }

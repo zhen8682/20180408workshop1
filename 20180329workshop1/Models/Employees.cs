@@ -12,18 +12,33 @@ namespace _20180329workshop1.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Shippers
+    public partial class Employees
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Shippers()
+        public Employees()
         {
+            this.Employees1 = new HashSet<Employees>();
             this.Orders = new HashSet<Orders>();
         }
     
-        public int ShipperID { get; set; }
-        public string CompanyName { get; set; }
+        public int EmployeeID { get; set; }
+        public string LastName { get; set; }
+        public string FirstName { get; set; }
+        public string Title { get; set; }
+        public string TitleOfCourtesy { get; set; }
+        public System.DateTime BirthDate { get; set; }
+        public System.DateTime HireDate { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string Region { get; set; }
+        public string PostalCode { get; set; }
+        public string Country { get; set; }
         public string Phone { get; set; }
+        public Nullable<int> MnangerID { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Employees> Employees1 { get; set; }
+        public virtual Employees Employees2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Orders> Orders { get; set; }
     }
