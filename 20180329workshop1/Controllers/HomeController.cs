@@ -4,20 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.SqlClient;
+using System.Data;
+using System.Data.Common;
+
 
 namespace _20180329workshop1.Controllers
 {
     public class HomeController : Controller
     {
-        List<Models.Orders> result = new List<Orders>();
-        public HomeController(){
+        
 
-            if (result.Count< 1) {
-                result.Add(new Orders() { OrderID = 1, CustomerID = 1, EmployeeID = 1, Freight = 60, ShipperID = 1, ShipAddress = "台南市忠孝東路21號", ShipCity = "台南市", ShipRegion = "東區", ShipPostalCode = "701", ShipCountry = "台灣" });
-                result.Add(new Orders() { OrderID = 1, CustomerID = 1, EmployeeID = 1, Freight = 60, ShipperID = 1, ShipAddress = "台南市忠孝東路21號", ShipCity = "台南市", ShipRegion = "東區", ShipPostalCode = "701", ShipCountry = "台灣" });
-                result.Add(new Orders() { OrderID = 1, CustomerID = 1, EmployeeID = 1, Freight = 60, ShipperID = 1, ShipAddress = "台南市忠孝東路21號", ShipCity = "台南市", ShipRegion = "東區", ShipPostalCode = "701", ShipCountry = "台灣" });
+           List<Models.Orders> result = new List<Orders>();
+        public  HomeController(){
 
-            }
+            
+             
+
 
         }
 
@@ -35,18 +38,67 @@ namespace _20180329workshop1.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            Models.OrdersService ordersservice = new Models.OrdersService();
-            var orders = ordersservice.GetOrdersBycondition(new Models.OrdersSearchArg() {
-                ///FirstName;LastName;
-                OrderID = "1",
-                ContactName="王曉明",
-                CompanyName="科技公司",
-                OrderDate="",
-                ShippedDate="" 
-            });
+            String connStr = @"Data Source=DESKTOP-KB2KNKQ\SQL2012;Initial Catalog=TSQL2012;Integrated Security=SSPI";
+            SqlConnection conn = new SqlConnection(connStr);
+            string sql = "SELECT * FROM [Sales].[Orders]";
+            SqlDataAdapter dataAdapter = new SqlDataAdapter(sql, conn);
+            DataSet ds = new DataSet();
+            dataAdapter.Fill(ds);
+            DataTable select = ds.Tables[0];
 
-            ViewBag.OrdersAdd = orders[0];
-            return View(orders);
+            List<Models.Orders> result = new List<Orders>();
+            foreach (DataRow item in select.Rows)
+            {
+                Nullable<DateTime> OrderDate = null;
+                Nullable<DateTime> RequiredDate = null;
+                Nullable<DateTime> ShippedDate = null;
+                if (item["OrderDate"].ToString().Length>0)
+                {OrderDate = Convert.ToDateTime(item["OrderDate"].ToString());
+                }
+                if (item["RequiredDate"].ToString().Length > 0)
+                {
+                    RequiredDate = Convert.ToDateTime(item["RequiredDate"].ToString());
+                }
+                if (item["ShippedDate"].ToString().Length > 0)
+                {
+                    ShippedDate = Convert.ToDateTime(item["ShippedDate"].ToString());
+                }
+                Models.Orders model = new Orders
+                {
+                    OrderID = int.Parse(item["OrderID"].ToString()),
+                    CustomerID = int.Parse(item["CustomerID"].ToString()),
+                    EmployeeID = int.Parse(item["EmployeeID"].ToString()),
+                    ShipperID = int.Parse(item["ShipperID"].ToString()),
+                    Freight = Decimal.Parse(item["Freight"].ToString()),
+                    OrderDate = OrderDate,
+                    RequiredDate = RequiredDate,
+                    ShippedDate = ShippedDate,
+                    ShipAddress = item["ShipAddress"].ToString(),
+                    ShipCity = item["ShipCity"].ToString(),
+                    ShipRegion = item["ShipRegion"].ToString(),
+                    ShipPostalCode = item["ShipPostalCode"].ToString(),
+                    ShipCountry = item["ShipCountry"].ToString()
+                };
+                result.Add(model);
+            }
+            ViewBag.list = result;
+            return View();
+
+
+
+
+            //Models.OrdersService ordersservice = new Models.OrdersService();
+            //var orders = ordersservice.GetOrdersBycondition(new Models.OrdersSearchArg() {
+            //    ///FirstName;LastName;
+            //    OrderID = "1",
+            //    ContactName="王曉明",
+            //    CompanyName="科技公司",
+            //    OrderDate="",
+            //    ShippedDate="" 
+            //});
+
+            //ViewBag.OrdersAdd = orders[0];
+            /////return View(orders);
             
         }
 

@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data.SqlClient;
+using System.Data;
+using System.Data.Common;
 
 namespace _20180329workshop1.Models
 {
+
+
 
     ///static List<Models.Orders> result = new List<Orders>();
 
@@ -13,6 +18,9 @@ namespace _20180329workshop1.Models
     /// </summary>
     public class OrdersService
     {
+        
+        
+
         static List<Models.Orders> result = new List<Orders>();
         ///result.Add(new Orders() { OrderID = 1, CustomerID = 1, EmployeeID = 1, Freight = 60, ShipperID = 1, ShipAddress = "台南市忠孝東路21號", ShipCity = "台南市", ShipRegion = "東區", ShipPostalCode = "701", ShipCountry = "台灣" });
 
