@@ -1,0 +1,193 @@
+﻿@model workshop1.Models.Order
+@{ ViewBag.Title = "建立訂單"; }
+
+@using (Html.BeginForm("CreateOrder", "Order", FormMethod.Post))
+{
+    <table style="margin-top:20px">
+        <tr></tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.CustomerID, new { @class = "required" })</td>
+            <td colspan="3">
+                @Html.DropDownListFor(m => m.CustomerID, (SelectList)ViewBag.CustomerList, "請選擇", new { @class = "form-control", style = "width:200px" })
+                @Html.ValidationMessageFor(m => m.CustomerID)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.EmployeeID, new { @class = "required" })</td>
+            <td colspan="3">
+                @Html.DropDownListFor(m => m.EmployeeID, (IEnumerable<SelectListItem>)ViewBag.EmployeeList, "請選擇", new { @class = "form-control", style = "width:200px" })
+                @Html.ValidationMessageFor(m => m.EmployeeID)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.OrderDate, new { @class = "required" })</td>
+            <td>
+                @Html.TextBoxFor(m => m.OrderDate, new { type = "date", @class = "form-control", style = "width:150px" })
+                @Html.ValidationMessageFor(m => m.OrderDate)
+            </td>
+            <td>@Html.LabelFor(m => m.RequiredDate, new { @class = "required" })</td>
+            <td>
+                @Html.TextBoxFor(m => m.RequiredDate, new { type = "date", @class = "form-control", style = "width:150px" })
+                @Html.ValidationMessageFor(m => m.RequiredDate)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.ShippedDate)</td>
+            <td colspan="3">
+                @Html.TextBoxFor(m => m.ShippedDate, new { type = "date", @class = "form-control", style = "width:150px" })
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.ShipperID)</td>
+            <td colspan="3">
+                @Html.DropDownListFor(m => m.ShipperID, (IEnumerable<SelectListItem>)ViewBag.ShipperList, "請選擇", new { @class = "form-control", style = "width:200px" })
+                @Html.ValidationMessageFor(m => m.ShipperID)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.Freight)</td>
+            <td colspan="3">
+                @Html.TextBoxFor(m => m.Freight, new { type = "number", @class = "input-number form-control", style = "width:150px" })
+                @Html.ValidationMessageFor(m => m.Freight)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.ShipCountry)</td>
+            <td>
+                @Html.TextBoxFor(m => m.ShipCountry, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ShipCountry)
+            </td>
+            <td>@Html.LabelFor(m => m.ShipCity)</td>
+            <td>
+                @Html.TextBoxFor(m => m.ShipCity, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ShipCity)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.ShipRegion)</td>
+            <td>
+                @Html.TextBoxFor(m => m.ShipRegion, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ShipRegion)
+            </td>
+            <td>@Html.LabelFor(m => m.ShipPostalCode)</td>
+            <td>
+                @Html.TextBoxFor(m => m.ShipPostalCode, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ShipPostalCode)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.ShipAddress)</td>
+            <td colspan="3">
+                @Html.TextBoxFor(m => m.ShipAddress, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ShipAddress)
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="3">
+                <input type="submit" value="存檔" class="btn btn-primary" />
+                <button type="button" class="btn btn-warning" onclick="location.href='@Url.Action("Query", "Order")';">回前一頁</button>
+            </td>
+        </tr>
+    </table>
+
+    <button type="button" onclick="AddDetail();">新增商品</button>
+    <table id="detailTable" style="border: 1px solid black; width: 80%" class="DetailTable">
+        <tr>
+            <th>商品</th>
+            <th>單價</th>
+            <th>數量</th>
+            <th>小計</th>
+            <th>動作</th>
+        </tr>
+
+    </table>
+}
+<script type="text/javascript">    
+    @if(!string.IsNullOrWhiteSpace(ViewBag.ErrorMessage))
+    {
+    <text>
+    alert("@ViewBag.ErrorMessage");
+    </text>
+    }
+    var detailIndex = 0;
+    function AddDetail() {
+        // 拿商品選單資料後才組成row
+        $.ajax({
+            type: "GET",
+            url: "/Order/GetProducts",
+            dataType: "json",
+            success: function (r) {
+                var row = "<tr id='row_" + detailIndex + "'>";
+                // 商品
+                row += "<td>";
+                var productDDL = "<select name='Details[" + detailIndex + "].ProductID' id='product_" + detailIndex + "' onchange='ChangePrice($(this).val(), " + detailIndex + ");'>";
+                var list = r;
+                for (var i = 0; i < list.length; i++) {
+                    productDDL += "<option value='" + list[i].Value + "'>" + list[i].Text + "</option>"
+                }
+                productDDL += "</select>";
+                row += productDDL;
+                row += "</td>";
+                // 單價
+                row += "<td>";
+                row += "<input type='text' name='Details[" + detailIndex + "].UnitPrice' id='price_" + detailIndex + "' class='input-number' onchange='Caculate(" + detailIndex + ")' value='0'/>"
+                row += "</td>";
+                // 數量
+                row += "<td>";
+                row += "<input type='number' name='Details[" + detailIndex + "].Qty'  id='num_" + detailIndex + "' class='input-number' onchange='Caculate(" + detailIndex + ")' value='0' />"
+                row += "</td>";
+                // 小計
+                row += "<td>";
+                row += "<span id='total_" + detailIndex + "'></span>"
+                row += "</td>";
+                // 按鈕
+                row += "<td>";
+                row += "<button type='button' onclick='RemoveRow(" + detailIndex + ");'>取消</button>";
+                row += "</td>";
+
+                row += "</tr>";
+                $('#detailTable').append(row);
+                detailIndex++;
+            }, error: function (r) {
+            }
+        })
+    }
+
+    function ChangePrice(value, index) {
+        $.ajax({
+            type: "GET",
+            url: "/Order/GetProductPrice?ProductID=" + value,
+            dataType: "json",
+            success: function (r) {
+                $('#price_' + index).val(r);
+                Caculate(index);
+            }
+        })
+    }
+
+    function RemoveRow(index) {
+        // 刪除Row時將row藏起來才不會讓List binding出錯
+        $('#row_' + index).hide();
+        $('#product_' + index).val(0);
+    }
+
+    function Caculate(index) {
+        var total = $('#price_' + index).val() * $('#num_' + index).val();
+        $('#total_' + index).text(total)
+    }
+</script>
+
+<style>
+    .DetailTable {
+        border: 1px solid black
+    }
+
+        .DetailTable th {
+            border: 1px solid black
+        }
+
+        .DetailTable td {
+            border: 1px solid black
+        }
+</style>
