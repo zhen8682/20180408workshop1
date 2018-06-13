@@ -241,5 +241,9 @@ namespace workshop1.Controllers
             SelectList shipperList = new SelectList(s.GetAllProduct(), "ProductID", "ProductName");
             return shipperList;
         }
+        public ActionResult KendoUITest()
+        {
+            return View();
+        }
     }
 }
