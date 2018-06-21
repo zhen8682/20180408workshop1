@@ -23,10 +23,12 @@
             <td colspan="3">@Html.DropDownListFor(m => m.ShipperID, (IEnumerable<SelectListItem>)ViewBag.ShipperList, "請選擇", new { @class = "form-control", style = "width:200px" })</td>
         </tr>
         <tr>
-            <td>@Html.LabelFor(m => m.OrderDate)</td>
-            <td>@Html.TextBoxFor(m => m.OrderDate, new { type = "date" , @class="form-control", style = "width:200px" })</td>
+
+            <td >@Html.LabelFor(m => m.OrderDate)</td>
+            <td >@Html.TextBoxFor(m => m.OrderDate, new { type = "date" , @class="form-control", style = "width:200px" })</td>
             <td>@Html.LabelFor(m => m.ShipedDate)</td>
             <td>@Html.TextBoxFor(m => m.ShipedDate, new { type = "date", @class = "form-control", style = "width:200px" })</td>
+            <td><input id="datepicker" /></td>
         </tr>
         <tr>
             <td>@Html.LabelFor(m => m.RequiredDate)</td>
@@ -41,4 +43,12 @@
             </td>
         </tr>
     </table>
+    <script>
+            $(document).ready(function() {
+                // create DatePicker from input HTML element
+                $("#datepicker").kendoDatePicker();
+
+
+            });
+    </script>
 }
