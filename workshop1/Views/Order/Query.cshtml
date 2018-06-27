@@ -8,11 +8,11 @@
     <table style="margin-top:10px;">
         <tr>
             <td>@Html.LabelFor(m => m.OrderID)</td>
-            <td colspan="3">@Html.TextBoxFor(m => m.OrderID, new { type= "number", @class="form-control input-number", style="width:200px"})</td>
+            <td colspan="3">@Html.TextBoxFor(m => m.OrderID, new { type= "number", style="width:200px"})</td>
         </tr>
         <tr>
             <td>@Html.LabelFor(m => m.CompanyName)</td>
-            <td colspan="3">@Html.TextBoxFor(m => m.CompanyName, new { @class= "form-control", style = "width:200px" })</td>
+            <td colspan="3"><kendo-maskedtextbox>@Html.TextBoxFor(m => m.CompanyName, new { @class = "k-textbox", style = "width:200px" })</kendo-maskedtextbox></td>
         </tr>
         <tr>
             <td>@Html.LabelFor(m => m.EmployeeID)</td>
@@ -37,13 +37,13 @@
         <tr>
             <td></td>
             <td colspan="3">
-                <input type="submit" value="查詢" class="btn btn-primary" />
-                <input type="reset" value="清除" class="btn btn-warning" />
-                <button type="button" class="btn btn-info" onclick="location.href='@Url.Action("CreateOrder", "Order")';">新增訂單</button>
+                <input type="submit" id="textButton" value="查詢"  />
+                <input type="reset" id="textButton" class="k-button" value="清除"  />
+                <button type="button" id="textButton" class="k-button" onclick="location.href='@Url.Action("CreateOrder", "Order")';">新增訂單</button>
             </td>
         </tr>
     </table>
-   
+
     <script>
         $(document).ready(function () {
             $.getScript("../../Scripts/kendo.all.min.js", function () {
@@ -51,11 +51,13 @@
                 $("#OrderDate").kendoDatePicker();
                 $("#ShipedDate").kendoDatePicker();
                 $("#RequiredDate").kendoDatePicker();
-                
+                $("#EmployeeID").kendoDropDownList();
+                $("#ShipperID").kendoDropDownList();
+                $("#textButton").kendoButton();
+                $("#OrderID").kendoNumericTextBox({
+                });
             })
-                
 
-
-            });
+});
     </script>
 }

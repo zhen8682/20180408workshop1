@@ -46,50 +46,50 @@
         <tr>
             <td>@Html.LabelFor(m => m.Freight)</td>
             <td colspan="3">
-                @Html.TextBoxFor(m => m.Freight, new { type = "number", @class = "input-number form-control", style = "width:150px" })
+                @Html.TextBoxFor(m => m.Freight, new { type = "number", style = "width:150px" })
                 @Html.ValidationMessageFor(m => m.Freight)
             </td>
         </tr>
         <tr>
             <td>@Html.LabelFor(m => m.ShipCountry)</td>
             <td>
-                @Html.TextBoxFor(m => m.ShipCountry, new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.ShipCountry, new { @class = "k-textbox" })
                 @Html.ValidationMessageFor(m => m.ShipCountry)
             </td>
             <td>@Html.LabelFor(m => m.ShipCity)</td>
             <td>
-                @Html.TextBoxFor(m => m.ShipCity, new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.ShipCity, new { @class = "k-textbox" })
                 @Html.ValidationMessageFor(m => m.ShipCity)
             </td>
         </tr>
         <tr>
             <td>@Html.LabelFor(m => m.ShipRegion)</td>
             <td>
-                @Html.TextBoxFor(m => m.ShipRegion, new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.ShipRegion, new { @class = "k-textbox" })
                 @Html.ValidationMessageFor(m => m.ShipRegion)
             </td>
             <td>@Html.LabelFor(m => m.ShipPostalCode)</td>
             <td>
-                @Html.TextBoxFor(m => m.ShipPostalCode, new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.ShipPostalCode, new { @class = "k-textbox" })
                 @Html.ValidationMessageFor(m => m.ShipPostalCode)
             </td>
         </tr>
         <tr>
             <td>@Html.LabelFor(m => m.ShipAddress)</td>
             <td colspan="3">
-                @Html.TextBoxFor(m => m.ShipAddress, new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.ShipAddress, new { @class = "k-textbox" })
                 @Html.ValidationMessageFor(m => m.ShipAddress)
             </td>
         </tr>
         <tr>
             <td></td>
             <td colspan="3">
-                <input type="submit" value="存檔" class="btn btn-primary" />
+                <input type="submit" value="存檔" class="k-button" />
             </td>
         </tr>
     </table>
 
-    <button type="button" onclick="AddDetail();">新增商品</button>
+    <button type="button" class="k-button" onclick="AddDetail();">新增商品</button>
     <table id="detailTable" style="border: 1px solid black; width: 80%" class="DetailTable">
         <tr>
             <th>商品</th>
@@ -111,25 +111,25 @@
                                , new { id = "product_" + index})
                 </td>
                 <td>
-                    <input type='text' name='Details[@(index)].UnitPrice' id='price_@(index)' class='input-number' onchange='Caculate(@(index))' value='@(Model.Details[index].UnitPrice)' />
+                    <input type='text' name='Details[@(index)].UnitPrice' id='price_@(index)'  class='k-numeric-wrap k-state-default' onchange='Caculate(@(index))' value='@(Model.Details[index].UnitPrice)' />
                 </td>
                 <td>
-                    <input type='number' name='Details[@(index)].Qty' id='num_@(index)' class='input-number' onchange='Caculate(@(index))' value='@(Model.Details[index].Qty)' />
+                    <input type='number' name='Details[@(index)].Qty' id='num_@(index)'  class='k-numeric-wrap k-state-default' onchange='Caculate(@(index))' value='@(Model.Details[index].Qty)' />
                 </td>
                 <td>
                     <span id='total_@(index)'>@(Model.Details[index].UnitPrice * Model.Details[index].Qty)</span>
                 </td>
                 <td>
-                    <button type='button' onclick='RemoveRow(@(index));'>取消</button>
+                    <button type='button' class='k-button' onclick='RemoveRow(@(index));'>取消</button>
                 </td>
             </tr>
         }
     </table>
 }
     <div style="margin-left:92px">
-        <button type="button" onclick="DeleteOrder(@(Model.OrderID))" class="btn btn-danger">刪除本筆訂單</button>
+        <button type="button" onclick="DeleteOrder(@(Model.OrderID))" class="k-button">刪除本筆訂單</button>
 
-        <button type="button" class="btn btn-warning" style="margin-top:2px" onclick="location.href='@Url.Action("Query", "Order")';">回前一頁</button>
+        <button type="button" class="k-button" style="margin-top:2px" onclick="location.href='@Url.Action("Query", "Order")';">回前一頁</button>
     </div>
 
 <script type="text/javascript">
@@ -152,7 +152,7 @@
                 var row = "<tr id='row_" + detailIndex + "'>";
                 // 商品
                 row += "<td>";
-                var productDDL = "<select name='Details[" + detailIndex + "].ProductID' id='product_" + detailIndex + "' onchange='ChangePrice($(this).val(), " + detailIndex + ");'>";
+                var productDDL = "<select name='Details[" + detailIndex + "].ProductID' id='product_" + detailIndex + "' class='k-dropdown-wrap k-state-default' onchange='ChangePrice($(this).val(), " + detailIndex + ");'>";
                 var list = r;
                 for (var i = 0; i < list.length; i++) {
                     productDDL += "<option value='" + list[i].Value + "'>" + list[i].Text + "</option>"
@@ -162,11 +162,11 @@
                 row += "</td>";
                 // 單價
                 row += "<td>";
-                row += "<input type='text' name='Details[" + detailIndex + "].UnitPrice' id='price_" + detailIndex + "' class='input-number' onchange='Caculate(" + detailIndex + ")' value='0'/>"
+                row += "<input type='text' class='k-numeric-wrap k-state-default' name='Details[" + detailIndex + "].UnitPrice' id='price_" + detailIndex + "'  onchange='Caculate(" + detailIndex + ")' value='0'/>"
                 row += "</td>";
                 // 數量
                 row += "<td>";
-                row += "<input type='number' name='Details[" + detailIndex + "].Qty'  id='num_" + detailIndex + "' class='input-number' onchange='Caculate(" + detailIndex + ")' value='0' />"
+                row += "<input type='number' class='k-numeric-wrap k-state-default' name='Details[" + detailIndex + "].Qty'  id='num_" + detailIndex + "'  onchange='Caculate(" + detailIndex + ")' value='0' />"
                 row += "</td>";
                 // 小計
                 row += "<td>";
@@ -225,6 +225,22 @@
             },
         })
     }
+    $(document).ready(function () {
+        $.getScript("../../Scripts/kendo.all.min.js", function () {
+            // create DatePicker from input HTML element
+            $("#OrderDate").kendoDatePicker();
+            $("#ShippedDate").kendoDatePicker();
+            $("#RequiredDate").kendoDatePicker();
+            $("#CustomerID").kendoDropDownList();
+            $("#EmployeeID").kendoDropDownList();
+            $("#ShipperID").kendoDropDownList();
+            $("#ProductID").kendoDropDownList();
+            $("#textButton").kendoButton();
+            $("#Freight").kendoNumericTextBox({
+            });
+        })
+
+    });
 </script>
 
 <style>

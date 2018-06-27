@@ -37,13 +37,13 @@
                 <td class="center">@(order.ShippedDate.HasValue ? order.ShippedDate.Value.ToString("yyyy/MM/dd") : "")</td>
                 <td class="input-number">@(order.Freight.HasValue ? order.Freight.Value.ToString("#,##0") : "")</td>
                 <td class="center">@Html.ActionLink("修改", "UpdateOrder", new { controller = "Order", orderID = order.OrderID })</td>
-                <td class="center"><button type="button" onclick="DeleteOrder(@(order.OrderID))">刪除</button></td>
+                <td class="center"><button type="button" class="k-button" onclick="DeleteOrder(@(order.OrderID))">刪除</button></td>
             </tr>
         }
     </tbody>
 </table>
 
-<button type="button" class="btn btn-warning" onclick="location.href='@Url.Action("Query", "Order")';">回查詢頁</button>
+<button type="button" class="k-button" onclick="location.href='@Url.Action("Query", "Order")';">回查詢頁</button>
 
 <script type="text/javascript">
     function DeleteOrder(orderId) {
@@ -60,5 +60,10 @@
             },
         })
     }
+            $(document).ready(function () {
+            $.getScript("../../Scripts/kendo.all.min.js", function () {
+                $("#textButton").kendoButton();
+            })
+});
 </script>
 
